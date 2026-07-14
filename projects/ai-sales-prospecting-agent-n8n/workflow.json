@@ -1,0 +1,86 @@
+{
+  "name": "AI Sales Prospecting Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "company_name", "value": "Studio Aurora" },
+            { "name": "website", "value": "https://example.com" },
+            { "name": "segment", "value": "design e arquitetura" },
+            { "name": "contact_name", "value": "Marina Costa" },
+            { "name": "contact_role", "value": "Diretora de Marketing" },
+            { "name": "goal", "value": "apresentar automacao com IA para prospeccao e briefings" }
+          ]
+        }
+      },
+      "id": "set-account-data",
+      "name": "Set Account Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst prompt = `Voce e um analista de prospeccao B2B. Analise a conta abaixo e gere JSON com: company_summary, likely_pains, approach_angle, linkedin_message, email_subject, email_body, follow_up, priority.\\n\\nEmpresa: ${item.company_name}\\nSite: ${item.website}\\nSegmento: ${item.segment}\\nContato: ${item.contact_name} - ${item.contact_role}\\nObjetivo: ${item.goal}`;\nreturn [{ json: { ...item, prompt } }];"
+      },
+      "id": "build-prompt",
+      "name": "Build Prospecting Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"model\":\"gpt-4o-mini\",\"messages\":[{\"role\":\"system\",\"content\":\"Voce cria analises comerciais objetivas e mensagens B2B personalizadas.\"},{\"role\":\"user\",\"content\":$json.prompt}],\"temperature\":0.4}"
+      },
+      "id": "openai-analysis",
+      "name": "OpenAI - Account Analysis",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [660, 0],
+      "notes": "Configure OpenAI credential in n8n before running."
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst content = response.choices?.[0]?.message?.content || JSON.stringify(response);\nreturn [{ json: { generated_prospecting_brief: content, created_at: new Date().toISOString() } }];"
+      },
+      "id": "format-output",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Set Account Data", "type": "main", "index": 0 }]]
+    },
+    "Set Account Data": {
+      "main": [[{ "node": "Build Prospecting Prompt", "type": "main", "index": 0 }]]
+    },
+    "Build Prospecting Prompt": {
+      "main": [[{ "node": "OpenAI - Account Analysis", "type": "main", "index": 0 }]]
+    },
+    "OpenAI - Account Analysis": {
+      "main": [[{ "node": "Format Output", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
