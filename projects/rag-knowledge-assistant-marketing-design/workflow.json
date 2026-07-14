@@ -1,0 +1,82 @@
+{
+  "name": "RAG Knowledge Assistant - Marketing and Design",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "question", "value": "Como explicar o valor de uma automacao com IA no processo comercial?" },
+            { "name": "retrieved_context", "value": "Contexto simulado: automacoes com IA reduzem tempo de pesquisa, padronizam respostas, organizam dados no CRM e melhoram follow-up comercial." }
+          ]
+        }
+      },
+      "id": "set-question-context",
+      "name": "Set Question and Retrieved Context",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst prompt = `Responda a pergunta usando apenas o contexto. Se o contexto for insuficiente, diga que precisa de mais documentos.\\n\\nPergunta: ${item.question}\\n\\nContexto recuperado:\\n${item.retrieved_context}`;\nreturn [{ json: { ...item, prompt } }];"
+      },
+      "id": "build-rag-prompt",
+      "name": "Build RAG Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"model\":\"gpt-4o-mini\",\"messages\":[{\"role\":\"system\",\"content\":\"Voce e um assistente interno que responde com base em contexto recuperado de uma base RAG.\"},{\"role\":\"user\",\"content\":$json.prompt}],\"temperature\":0.2}"
+      },
+      "id": "openai-rag-answer",
+      "name": "OpenAI - RAG Answer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [660, 0],
+      "notes": "Replace simulated context with real vector database retrieval."
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst answer = response.choices?.[0]?.message?.content || JSON.stringify(response);\nreturn [{ json: { answer, sources: ['simulated_context'], created_at: new Date().toISOString() } }];"
+      },
+      "id": "format-answer",
+      "name": "Format Answer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Set Question and Retrieved Context", "type": "main", "index": 0 }]]
+    },
+    "Set Question and Retrieved Context": {
+      "main": [[{ "node": "Build RAG Prompt", "type": "main", "index": 0 }]]
+    },
+    "Build RAG Prompt": {
+      "main": [[{ "node": "OpenAI - RAG Answer", "type": "main", "index": 0 }]]
+    },
+    "OpenAI - RAG Answer": {
+      "main": [[{ "node": "Format Answer", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
