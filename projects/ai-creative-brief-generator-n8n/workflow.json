@@ -1,0 +1,86 @@
+{
+  "name": "AI Creative Brief Generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "client", "value": "Instituto Horizonte" },
+            { "name": "project_type", "value": "campanha de lancamento de curso" },
+            { "name": "objective", "value": "atrair alunos para uma nova turma sobre criatividade e tecnologia" },
+            { "name": "audience", "value": "profissionais de design, arquitetura e comunicacao" },
+            { "name": "channels", "value": "Instagram, LinkedIn, landing page, email" },
+            { "name": "references", "value": "visual contemporaneo, humano, tecnologico, sem parecer futurista demais" }
+          ]
+        }
+      },
+      "id": "set-brief-input",
+      "name": "Set Brief Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst prompt = `Crie um briefing criativo estruturado em markdown com: resumo executivo, objetivo, publico, tom de comunicacao, narrativa, ideias de campanha, prompts visuais, checklist de producao e proximos passos.\\n\\nCliente: ${item.client}\\nTipo: ${item.project_type}\\nObjetivo: ${item.objective}\\nPublico: ${item.audience}\\nCanais: ${item.channels}\\nReferencias: ${item.references}`;\nreturn [{ json: { ...item, prompt } }];"
+      },
+      "id": "build-brief-prompt",
+      "name": "Build Brief Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"model\":\"gpt-4o-mini\",\"messages\":[{\"role\":\"system\",\"content\":\"Voce e um estrategista criativo senior que organiza briefings claros para times de design, marketing e vendas.\"},{\"role\":\"user\",\"content\":$json.prompt}],\"temperature\":0.6}"
+      },
+      "id": "openai-creative-brief",
+      "name": "OpenAI - Creative Brief",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [660, 0],
+      "notes": "Configure OpenAI credential in n8n before running."
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst brief = response.choices?.[0]?.message?.content || JSON.stringify(response);\nreturn [{ json: { creative_brief_markdown: brief, created_at: new Date().toISOString() } }];"
+      },
+      "id": "format-brief",
+      "name": "Format Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Set Brief Input", "type": "main", "index": 0 }]]
+    },
+    "Set Brief Input": {
+      "main": [[{ "node": "Build Brief Prompt", "type": "main", "index": 0 }]]
+    },
+    "Build Brief Prompt": {
+      "main": [[{ "node": "OpenAI - Creative Brief", "type": "main", "index": 0 }]]
+    },
+    "OpenAI - Creative Brief": {
+      "main": [[{ "node": "Format Brief", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
