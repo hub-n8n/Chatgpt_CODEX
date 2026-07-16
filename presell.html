@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imersão Tradutor de Almas | Entenda como funciona</title>
+  <meta name="description" content="Conheça a imersão Tradutor de Almas conduzida por Andrea Vermont e descubra como funciona esse método de desenvolvimento pessoal.">
+  <style>
+    /* ===== Base / Reset ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #e2e8f0;
+      --brand: #1d4ed8;
+      --brand-hover: #1e40af;
+      --radius: 16px;
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #e2e8f0 0%, #f8fafc 100%);
+      color: var(--text);
+      line-height: 1.65;
+      padding: 18px 12px;
+    }
+
+    /* ===== Estrutura principal (máx 900px) ===== */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    header, section, footer { padding: 24px 18px; }
+
+    /* ===== Header ===== */
+    header {
+      background: linear-gradient(120deg, #dbeafe 0%, #eff6ff 100%);
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    p { color: var(--muted); margin-bottom: 12px; }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 1.03rem;
+    }
+
+    /* ===== Blocos de seção ===== */
+    .section + .section { border-top: 1px solid var(--line); }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    /* ===== Lista de conteúdo ===== */
+    .lista {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .lista li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    .lista li::before {
+      content: "•";
+      color: var(--brand);
+      font-size: 1.25rem;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    /* ===== CTA ===== */
+    .cta {
+      text-align: center;
+      background: #f8fafc;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 6px;
+      text-decoration: none;
+      background: var(--brand);
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      padding: 16px 30px;
+      border-radius: 12px;
+      min-width: 260px;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .cta-button:hover,
+    .cta-button:focus-visible {
+      background: var(--brand-hover);
+      transform: translateY(-1px);
+    }
+
+    .notice {
+      margin-top: 12px;
+      font-size: .92rem;
+      color: #64748b;
+    }
+
+    /* ===== Política fictícia ===== */
+    .privacy {
+      background: #ffffff;
+    }
+
+    .privacy small {
+      color: #64748b;
+    }
+
+    /* ===== Rodapé ===== */
+    footer {
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: .92rem;
+      color: #64748b;
+      background: #ffffff;
+    }
+
+    .footer-links {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible { text-decoration: underline; }
+
+    /* ===== Responsividade ===== */
+    @media (min-width: 768px) {
+      body { padding: 36px 16px; }
+      header, section, footer { padding: 32px 36px; }
+      h1 { font-size: 2.35rem; }
+      h2 { font-size: 1.6rem; }
+      .cta-button { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <!-- HEADER: Título e subtítulo principais -->
+    <header>
+      <h1>O que é o método Tradutor de Almas?</h1>
+      <p class="subtitle">Conheça a imersão conduzida por Andrea Vermont e entenda como funciona essa abordagem de desenvolvimento pessoal e autoconhecimento.</p>
+    </header>
+
+    <!-- SEÇÃO EXPLICAÇÃO: Texto informativo com linguagem neutra -->
+    <section class="section" aria-labelledby="explicacao">
+      <h2 id="explicacao">Como funciona essa abordagem</h2>
+      <p>O método Tradutor de Almas é apresentado como uma trilha de desenvolvimento pessoal focada em ampliar a percepção emocional e energética de forma prática. A proposta da imersão é oferecer um caminho organizado para observar pensamentos, emoções e comportamentos com mais clareza.</p>
+      <p>Durante o conteúdo, o participante é convidado a aprofundar o autoconhecimento, reconhecer padrões emocionais recorrentes e compreender como esses padrões podem influenciar decisões e relações. A linguagem do material é voltada para estudo e reflexão, sem promessas de resultados imediatos.</p>
+      <p>Também há aplicação prática em relações pessoais, com orientações para escuta, comunicação e presença emocional no cotidiano. O objetivo é apoiar uma jornada de aprendizado contínuo, respeitando o ritmo individual.</p>
+    </section>
+
+    <!-- SEÇÃO O QUE VOCÊ VAI ENCONTRAR: Bullet points obrigatórios -->
+    <section class="section" aria-labelledby="encontrar">
+      <h2 id="encontrar">O que você vai encontrar</h2>
+      <ul class="lista">
+        <li>Conteúdo completo da imersão</li>
+        <li>Mais de 12 horas de material</li>
+        <li>Exercícios e conceitos apresentados durante o evento</li>
+        <li>Acesso às gravações para assistir no seu ritmo</li>
+        <li>Ebook complementar</li>
+      </ul>
+    </section>
+
+    <!-- SEÇÃO SOBRE A ESPECIALISTA -->
+    <section class="section" aria-labelledby="especialista">
+      <h3 id="especialista">Sobre a especialista</h3>
+      <div class="card">
+        <p>Andrea Vermont é a criadora do método Tradutor de Almas e conduz imersões voltadas ao desenvolvimento de percepção emocional e espiritual.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO CTA: Chamada para ação com botão centralizado -->
+    <section class="section cta" aria-labelledby="cta">
+      <h2 id="cta">Próximo passo</h2>
+      <p>Se você deseja conhecer os detalhes da imersão e acessar o conteúdo completo, clique no botão abaixo.</p>
+      <a class="cta-button" href="https://pay.hotmart.com/G104758643O?checkoutMode=10&amp;ref=E104880203G&amp;bid=1773402399738" target="_blank" rel="noopener noreferrer">ACESSAR A IMERSÃO</a>
+      <p class="notice">Página informativa. O acesso ao conteúdo ocorre na plataforma Hotmart.</p>
+    </section>
+
+    <!-- POLÍTICA DE PRIVACIDADE FICTÍCIA: bloco simples para conformidade -->
+    <section id="privacidade" class="section privacy" aria-labelledby="politica">
+      <h3 id="politica">Política de Privacidade (fictícia)</h3>
+      <p>Esta página coleta apenas dados técnicos básicos de navegação para fins de análise de desempenho e melhoria de experiência. Nenhuma informação sensível é solicitada diretamente nesta página. Ao clicar no botão de acesso, você será direcionado para a plataforma Hotmart, que possui seus próprios termos e políticas.</p>
+      <small>Conteúdo meramente ilustrativo para fins de estrutura de página presell.</small>
+    </section>
+
+    <!-- RODAPÉ: links institucionais simples -->
+    <footer>
+      <p>© 2026 Imersão Tradutor de Almas. Todos os direitos reservados.</p>
+      <div class="footer-links">
+        <a href="#privacidade">Política de Privacidade</a>
+        <span>•</span>
+        <a href="#">Termos de Uso</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
